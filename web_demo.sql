@@ -37,7 +37,7 @@ CREATE TABLE `upload_images` (
 
 LOCK TABLES `upload_images` WRITE;
 /*!40000 ALTER TABLE `upload_images` DISABLE KEYS */;
-INSERT INTO `upload_images` VALUES (1,'syha','docker01.jpg','2018-05-19 19:55:21'),(2,'syha','docker02.jpg','2018-05-19 19:55:24'),(3,'syha','docker03.jpg','2018-05-19 19:55:32'),(4,'syha','docker04.jpg','2018-05-19 19:55:52'),(5,'syha','docker05.jpg','2018-05-19 19:56:02'),(6,'syha','docker06.jpg','2018-05-19 19:56:12'),(7,'syha','docker07.jpg','2018-05-19 19:56:23'),(8,'syha','docker08.jpg','2018-05-19 19:56:33'),(9,'syha','docker09.jpg','2018-05-19 19:57:03'),(10,'syha','docker10.jpg','2018-05-19 19:57:39');
+INSERT INTO `upload_images` VALUES (1,'syha','megazone01.jpg','2018-05-19 19:55:21'),(2,'syha','megazone02.jpg','2018-05-19 19:55:24'),(3,'syha','megazone03.jpg','2018-05-19 19:55:32'),(4,'syha','megazone04.jpg','2018-05-19 19:55:52'),(5,'syha','megazone05.jpg','2018-05-19 19:56:02'),(6,'syha','megazone06.jpg','2018-05-19 19:56:12'),(7,'syha','megazone07.jpg','2018-05-19 19:56:23'),(8,'syha','megazone08.jpg','2018-05-19 19:56:33'),(9,'syha','megazone09.jpg','2018-05-19 19:57:03'),(10,'syha','megazone10.jpg','2018-05-19 19:57:39');
 /*!40000 ALTER TABLE `upload_images` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

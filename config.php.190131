@@ -4,10 +4,10 @@ require 'aws-sdk-for-php/aws-autoloader.php';
 use Aws\S3\S3Client;
 
 // Database connection parameters
-$db_hostname = "megazone-hands-on-rds.c6gradmwj7dj.ap-northeast-2.rds.amazonaws.com";
+$db_hostname = "localhost";
 $db_database = "web_demo";
 $db_username = "username";
-$db_password = "Root123!";
+$db_password = "password";
 
 // Image upload options
 $storage_option = "hd";
