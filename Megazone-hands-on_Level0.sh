@@ -22,11 +22,11 @@ sudo chkconfig httpd on
 
 ## Setting Database and insert dump
 echo -e "\nPlease press Enter key"
-mysql -u root -p'' mysql -e "CREATE DATABASE web_demo" >& /dev/null \echo -e "\n"
+mysql -u root -p'' mysql -e "CREATE DATABASE web_demo" >& /dev/null
 echo -e "\nPlease press Enter key"
-mysql -u root -p'' mysql -e "CREATE USER 'username'@'%' IDENTIFIED BY 'password'"  >& /dev/null \echo -e "\n"
+mysql -u root -p'' mysql -e "CREATE USER 'username'@'%' IDENTIFIED BY 'password'"  >& /dev/null
 echo -e "\nPlease press Enter key"
-mysql -u root -p'' mysql -e "GRANT ALL on web_demo.* to username@localhost IDENTIFIED BY 'password' with grant option"  >& /dev/null \echo -e "\n"
+mysql -u root -p'' mysql -e "GRANT ALL on web_demo.* to username@'localhost' IDENTIFIED BY 'password' with grant option" >& /dev/null
 mysql -u username -p'password' web_demo < /var/www/html/web-demo/web_demo.sql  >& /dev/null
 mysql -u username -p'password' web_demo -e "select * from upload_images"
 
@@ -36,4 +36,3 @@ sudo service httpd restart >& /dev/null
 ## Ec2 public ip check
 Publicip=$(curl http://169.254.169.254/latest/meta-data/public-ipv4 2>/dev/null)
 echo "URL : http://"$Publicip"/web-demo"
-
