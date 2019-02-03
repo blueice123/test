@@ -173,7 +173,7 @@ function open_memcache_connection($hostname)
 echo "<html>";
 echo "<head>";
 echo "<META http-equiv='Content-Type' content='text/html; charset=UTF-8'>";
-echo "<title>Megazon Hands-on Scalable Web Application</title>";
+echo "<title>Megazone Hands-on Scalable Web Application</title>";
 echo "<script src='demo.js'></script>";
 echo "</head>";
 echo "<body>";
@@ -184,7 +184,7 @@ if (isset($_SESSION['username']))
 	// This section is shown when user is login
 	echo "<table width=100% border=0>";
 	echo "<tr>";
-		echo "<H1>Megazon Hands-on lab</H1>";
+		echo "<H1>Megazone Hands-on lab</H1>";
 		echo "<td><H1>$server</H1></td>";
 		echo "<td align='right'>";
 			echo "$username<br>";
@@ -208,7 +208,7 @@ else
 	// This section is shown when user is not login
 	echo "<table width=100% border=0>";
 	echo "<tr>";
-		echo "<H1>Megazon Hands-on lab</H1>";
+		echo "<H1>Megazone Hands-on lab</H1>";
 		echo "<td><H1>$server</H1></td>";
 		echo "<td align='right'>";
 			echo "<form action='index.php' method='post'>";
