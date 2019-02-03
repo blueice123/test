@@ -5,7 +5,7 @@ sudo yum update -y  >& /dev/null
 sudo yum install -y httpd php-5.3.29 php-mysql-5.3.29 mysql-server-5.5 telnet git curl  >& /dev/null
 sudo yum update -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm >& /dev/null
 
-# Define PHP date timezone
+## Define PHP date timezone
 sudo perl -pi -e "s/\;date.timezone =/date.timezone = Asia\/Seoul/g" /etc/php.ini
 
 ## Download source files

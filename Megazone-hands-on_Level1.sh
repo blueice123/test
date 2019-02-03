@@ -1,23 +1,20 @@
 #!/bin/bash
-# endpoint(Ex : megazone-hands-on-rds.c6gradmwj7dj.ap-northeast-2.rds.amazonaws.com)
-rds_endpoint='megazone-hands-on-rds.c6gradmwj7dj.ap-northeast-2.rds.amazonaws.com'
-# Please enter your master username(Ex : username )
-rds_username='username'
-# Please enter your rds user password(Ex : password)
-rds_password='Root123!'
-# Please enter your memcache endpoint(Ex : megazone-hands-on.ndzwq5.cfg.apn2.cache.amazonaws.com:11211)
-memcache_endpoint='megazone-hands-on.ndzwq5.cfg.apn2.cache.amazonaws.com:11211'
-# Please enter your Amazon S3 bucket nname(Ex : megazone-hands-on-syha)
-s3_bucket_name='megazone-hands-on-syha'
+rds_endpoint=''       # Please enter your rds endpoint(Ex : megazone-hands-on-rds.c6gradmwj7dj.ap-northeast-2.rds.amazonaws.com)
+rds_username=''       # Please enter your master username(Ex : username )
+rds_password=''       # Please enter your rds user password(Ex : password)
+memcache_endpoint=''  # Please enter your memcached endpoint(Ex : megazone-hands-on.ndzwq5.cfg.apn2.cache.amazonaws.com:11211)
+s3_bucket_name=''     # Please enter your Amazon S3 bucket name(Ex : megazone-hands-on-syha)
 
+
+## RDS, Memcached setting function
 function RDS_memcache_setting(){
-  ## RDS, memcache 설정 전 파일 백업
+  ## Backup php config
   echo $rds_endpoint $rds_username $rds_password $memcache_endpoint
   sudo cp -rp /var/www/html/web-demo/config.php /var/www/html/web-demo/config.php.$day
 
-  ## RDS 설정
+  ## RDS settings
   RDS_check_con=$(nc -z -w5 $rds_endpoint 3306 | grep "succeeded")
-  if  [ -n "$RDS_check_con" ];then  ## DB dump insert
+  if  [ -n "$RDS_check_con" ];then  ## Insert DB dump
     mysql -h $rds_endpoint -u $rds_username -p''$rds_password'' web_demo < /var/www/html/web-demo/web_demo.sql  >& /dev/null
     rds_check=$(mysql -h $rds_endpoint -u $rds_username -p''$rds_password'' web_demo -e "select * from upload_images" | wc -l)
     sudo perl -pi -e "s/$db_hostname = \"localhost\"\;/$db_hostname = \"$rds_endpoint\"\;/g" /var/www/html/web-demo/config.php
@@ -28,11 +25,11 @@ function RDS_memcache_setting(){
     echo "Can not access RDS endpoint"
   fi
 
-  ## memcache 설정
-  memcache=$(echo  $memcache_endpoint | awk -F":" '{print $1}')  ## port number 분리
-  memcache_check_con=$(nc -z -w5 $memcache 11211 | grep "succeeded" )  ## memcache 접근 체크
-  if  [ -n "$memcache_check_con" ];then  ## php.ini 변경
-        sudo cp -rp /etc/php.ini /etc/php.ini.$day ## backup
+  ## memcache settings
+  memcache=$(echo  $memcache_endpoint | awk -F":" '{print $1}')  ## Split port number
+  memcache_check_con=$(nc -z -w5 $memcache 11211 | grep "succeeded" )  ## Check to access memcache
+  if  [ -n "$memcache_check_con" ];then  ## Change PHP configure file(php.ini)
+        sudo cp -rp /etc/php.ini /etc/php.ini.$day ## Backup PHP configure file(php.ini)
         sudo perl -pi -e "s/session.save_handler = files/session.save_handler = memcache/g" /etc/php.ini
         sudo perl -pi -e "s/session.save_path = \"\/var\/lib\/php\/session\"/session.save_path = $memcache_endpoint/g" /etc/php.ini
         sudo perl -pi -e "s/;date.timezone =/date.timezone = America\/New_York/g" /etc/php.ini
@@ -42,6 +39,7 @@ function RDS_memcache_setting(){
   fi
 }
 
+## Amazon S3 setting function
 function s3_config(){
   sudo perl -pi -e "s/$storage_option = \"hd\"\;/$storage_option = \"s3\"\;/g" /var/www/html/web-demo/config.php
   sudo perl -pi -e "s/$s3_bucket  = \"my-upload-bucket\"\;/$s3_bucket  = \"$s3_bucket_name\";/g" /var/www/html/web-demo/config.php
@@ -54,7 +52,7 @@ function s3_config(){
   sudo aws s3 sync --acl public-read /var/www/html/web-demo/uploads/ s3://$s3_bucket_name >& /dev/null
 }
 
-## 필수 패키지 설치
+## Install Package
 sudo yum update -y  >& /dev/null
 sudo yum install -y httpd php-5.3.29 php-mysql-5.3.29 mysql-server-5.5 telnet git curl php-pecl-memcache >& /dev/null
 sudo yum update -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm >& /dev/null
@@ -73,6 +71,6 @@ RDS_memcache_setting
 ## Amazon S3 setting
 s3_config $s3_bucket_name
 
-## Apache 시작
+## Start service
 sudo service httpd start >& /dev/null
 sudo chkconfig httpd on
